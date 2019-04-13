@@ -3,7 +3,7 @@ class Field(object):
     """A generic class that represents any field from the mongo database.
     """
 
-    def __init__(self, nullable=True, **kwargs):
+    def __init__(self, **kwargs):
         """Represent a field in a mongodb document/sub-document.
 
         :Parameters:
