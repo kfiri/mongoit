@@ -10,18 +10,18 @@ class Field(object):
           - `nullable` (optional): If ``True`` (the default), allow the value
             of this field to be ``None``. Otherwise, raise :class:`TypeError`
             (unless `default_bson` is specified).
-          - `strict` (optional): If ``True`` (the default is ``True`` if
+          - `required` (optional): If ``True`` (the default is ``True`` if
             `nullable` is ``False`` otherwise ``True``), raise
             :class:`TypeError` if this field does not exist in the query result
             that should include it (unless `default_bson` is specified).
-          - `default_bson`(optional): Used only if `strict` is ``True`` or
+          - `default_bson`(optional): Used only if `required` is ``True`` or
             if `nullable` is ``False``. When querying, use this BSON value if
             it does not exist in the query result. When updating or creating a
             new document, use this if the value was not specified explicitly.
         """
         super(Field, self).__init__()
         self.nullable = kwargs.pop('nullable', True)
-        self.strict = kwargs.pop('strict', not self.nullable)
+        self.required = kwargs.pop('required', not self.nullable)
         self._usedefault = 'default_bson' in kwargs
         self.default_bson = kwargs.pop('default_bson', None)
         if kwargs:
