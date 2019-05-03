@@ -1,3 +1,5 @@
+"""A boolean field within a Mongo document."""
+
 from .field import Field
 
 
