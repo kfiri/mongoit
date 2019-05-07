@@ -9,11 +9,11 @@ class StringField(Field):
     """Represents a string field in the mongo database.
     """
 
-    def validate_bson(self, value):
-        """Raises :class:`TypeError` if `value` is not an instance of 
+    def validate(self, value):
+        """Raises :class:`TypeError` if `value` is not an instance of
         :class:`str` (:class:`basestring` in python 2).
         """
-        if super(StringField, self).validate_bson(value):
+        if super(StringField, self).validate(value):
             return True
         if not isinstance(value, string_type):
             raise TypeError("value %s must be an instance of %s" %
