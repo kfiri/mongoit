@@ -15,7 +15,7 @@ class Field(object):
 
     def __init__(self, name=None, nullable=None, required=None,
                  get_default=None, **kwargs):
-        """Represent a field in a mongodb document/sub-document.
+        """Define a field in a mongodb document/sub-document.
 
         The livecicle of a field value is as followd:
         When quering -
@@ -79,7 +79,7 @@ class Field(object):
         `value` is ``None`` and not nullable.
 
         :Returns:
-          The resolved BSON value.
+          The resolved `value`.
         """
         if value is None and not self.nullable and self.get_default:
             return self.get_default()
