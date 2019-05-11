@@ -15,7 +15,7 @@ class Array(Field):
           - `field`: The field of the items in the array. The `name` and
             the `required` attributes of the `field` are discarded.
           - `**kwargs` (optional): See the documentation about
-            :class:`~mongomodals.field.Field`
+            :class:`~mongomodals.field.Field` for the full details.
         """
         super(Array, self).__init__(name=field.name, nullable=nullable,
                                     required=field.required,
@@ -40,7 +40,7 @@ class Array(Field):
 
     def validate(self, value):
         """Raises :class:`TypeError` if `value` is not an instance of
-        :class:`list` or if any validation of the items fail.
+        :class:`list` or if any validation of its items fail.
         """
         if super(Array, self).validate(value):
             return True
