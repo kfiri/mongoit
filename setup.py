@@ -1,8 +1,10 @@
 from setuptools import find_packages, setup
 
+# TODO until V0.2.0: use sphinx to generate doc.
+
 
 setup(name='mongomedels',
-      version='0.0.0',
+      version='0.0.1',
       author='Kfir Nissim',
       author_email='kfirr99@gmail.com',
       license='MIT',
