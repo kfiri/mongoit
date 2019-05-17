@@ -1,18 +1,10 @@
 """An object(/sub document) within a Mongo document."""
 
-import re
 from bson import SON
 from bson.py3compat import iteritems
 
 from .field import Field
-
-SNAKE_INITIAL_RE = re.compile('_(.)')
-
-
-def to_camel_case(string):
-    """Converts a snake_case `string` to lowerCamelCase (Naively).
-    """
-    return SNAKE_INITIAL_RE.sub(lambda match: match.group(1).upper(), string)
+from .utils import get_field_name
 
 
 class Object(Field):
@@ -54,9 +46,7 @@ class Object(Field):
     def _get_field_name(self, key, field):
         """Get the field name as it should appear in the database.
         """
-        if field.name:
-            return field.name
-        return key if key.startswith('_') else to_camel_case(key)
+        return get_field_name(key, field)
 
     def get_field_name(self, key):
         """Get the field name as it should appear in the database by a key.
@@ -93,7 +83,6 @@ class Object(Field):
         # Check the type of the BSON value.
         if not isinstance(value, dict):
             raise TypeError("value %r must be an instance of dict" % value)
-        
 
         extra_names = set(value)
         # Validate each child field in the BSON object.
