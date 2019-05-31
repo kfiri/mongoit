@@ -17,8 +17,8 @@ class Array(Field):
           - `**kwargs` (optional): See the documentation about
             :class:`~mongomodals.field.Field` for the full details.
         """
-        super(Array, self).__init__(name=field.name, nullable=nullable,
-                                    required=field.required,
+        super(Array, self).__init__(name=name, nullable=nullable,
+                                    required=required,
                                     get_default=get_default, **kwargs)
         self.field = field
 
