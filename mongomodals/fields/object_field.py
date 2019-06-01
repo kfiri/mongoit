@@ -4,7 +4,6 @@ from bson import SON
 from bson.py3compat import iteritems
 
 from .field import Field
-from .utils import get_field_name
 
 
 class Object(Field):
@@ -43,18 +42,10 @@ class Object(Field):
             repr_fields += ', ...' if repr_fields else '...'
         return "%s<%s>" % (super(Object, self).__repr__(), repr_fields)
 
-    def _get_field_name(self, key, field):
-        """Get the field name as it should appear in the database.
+    def get_field(self, key):
+        """Get the field in the `key` position of this field.
         """
-        return get_field_name(key, field)
-
-    def get_field_name(self, key):
-        """Get the field name as it should appear in the database by a key.
-        """
-        field = self.fields.get(key)
-        if field is None:
-            raise KeyError('%s is not in %r' % (key, self))
-        return self._get_field_name(key, field)
+        return self.fields.get(key, Field.anonymous)
 
     def resolve(self, value):
         """Resolve the BSON `value` by setting the default BSON value and

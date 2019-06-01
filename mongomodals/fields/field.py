@@ -3,6 +3,17 @@ The different bson types are discribed here:
 http://api.mongodb.com/python/current/api/bson/index.html
 """
 
+import re
+from bson.py3compat import text_type
+
+SNAKE_INITIAL_RE = re.compile('_(.)')
+
+
+def to_camel_case(string):
+    """Converts a snake_case `string` to lowerCamelCase (Naively).
+    """
+    return SNAKE_INITIAL_RE.sub(lambda match: match.group(1).upper(), string)
+
 
 class Field(object):
     """A generic class that represents any field from the Mongo database.
@@ -78,8 +89,7 @@ class Field(object):
         """Resolve the BSON `value` by setting the default BSON value if
         `value` is ``None`` and not nullable.
 
-        :Returns:
-          The resolved `value`.
+        This method should never raise an exception.
         """
         if value is None and not self.nullable and self.get_default:
             return self.get_default()
@@ -97,3 +107,32 @@ class Field(object):
                 return True
             raise TypeError("value of %s may not be null because that field "
                             "is not nullable" % self)
+
+    def get_field(self, key):
+        """Get the field in the `key` position of this field.
+        """
+        return self.anonymous
+
+    def _get_field_name(self, key, field):
+        """Get the name of the `field` in the `key` position of this field as it
+        should appear in the database.
+        """
+        if field.name:
+            return field.name
+        key = text_type(key)
+        return key if key.startswith(u'_') else to_camel_case(key)
+
+    def get_field_name(self, key):
+        """Get the name of the field in the `key` position of this field as it
+        should appear in the database.
+        """
+        return self._get_field_name(key, self.get_field(key))
+
+
+class AnonymousField(Field):
+    def __new__(self):
+        return Field.anonymous
+
+
+Field.anonymous = Field.__new__(AnonymousField)
+Field.anonymous.__init__(nullable=True, required=False)

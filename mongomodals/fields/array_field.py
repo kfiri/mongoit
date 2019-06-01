@@ -1,5 +1,7 @@
 """An array within a Mongo document."""
 
+from bson.py3compat import integer_types
+
 from .field import Field
 
 
@@ -24,6 +26,13 @@ class Array(Field):
 
     def __repr__(self):
         return "%s<%r>" % (super(Array, self).__repr__(), self.field)
+
+    def get_field(self, key):
+        """Get the field in the `key` position of this field.
+        """
+        if isinstance(key, integer_types):
+            return self.field
+        return self.field.get_field(key)
 
     def resolve(self, value):
         """Resolve the BSON `value` by setting the default BSON value and
