@@ -113,20 +113,15 @@ class Field(object):
         """
         return self.anonymous
 
-    def _get_field_name(self, key, field):
-        """Get the name of the `field` in the `key` position of this field as it
-        should appear in the database.
-        """
-        if field.name:
-            return field.name
-        key = text_type(key)
-        return key if key.startswith(u'_') else to_camel_case(key)
-
     def get_field_name(self, key):
         """Get the name of the field in the `key` position of this field as it
         should appear in the database.
         """
-        return self._get_field_name(key, self.get_field(key))
+        field = self.get_field(key)
+        if field.name:
+            return field.name
+        key = text_type(key)
+        return key if key.startswith(u'_') else to_camel_case(key)
 
 
 class AnonymousField(Field):

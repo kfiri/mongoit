@@ -57,7 +57,7 @@ class Object(Field):
         value = super(Object, self).resolve(value)
         if value is not None:
             for key, field in iteritems(self.fields):
-                name = self._get_field_name(key, field)
+                name = self.get_field_name(key)
                 if name in value:
                     value[name] = field.resolve(value[name])
                 elif field.required and field.get_default_bson:
@@ -78,7 +78,7 @@ class Object(Field):
         extra_names = set(value)
         # Validate each child field in the BSON object.
         for key, field in iteritems(self.fields):
-            name = self._get_field_name(key, field)
+            name = self.get_field_name(key)
             extra_names.difference_update((name,))
             if name in value:
                 field.validate(value[name])
