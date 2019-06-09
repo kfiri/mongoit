@@ -36,3 +36,33 @@ def test_validate_real_number(value):
 def test_fails_validate_real_number(value):
     with pytest.raises(TypeError):
         RealNumberField(nullable=False).validate(value)
+
+
+@pytest.mark.parametrize(('string', 'value'), [('0', 0),
+                                               ('-1', -1),
+                                               ('1.0', 1.0),
+                                               ('1.1', 1.1),
+                                               (b'1', 1),
+                                               (bytearray(b'1.1'), 1.1)])
+def test_resolve_number_string(string, value):
+    assert value == NumberField().resolve(string)
+
+
+@pytest.mark.parametrize(('raw', 'value'), [(1.0, 1),
+                                            ('0', 0),
+                                            ('-1.0', -1),
+                                            ('1.0', 1)])
+def test_resolve_int(raw, value):
+    resolved = IntegerField().resolve(raw)
+    assert isinstance(resolved, int)
+    assert value == resolved
+
+
+@pytest.mark.parametrize(('raw', 'value'), [(1, 1.0),
+                                            ('0', 0.0),
+                                            ('-1', -1.0),
+                                            ('1.0', 1.0)])
+def test_resolve_real_number(raw, value):
+    resolved = RealNumberField().resolve(raw)
+    assert isinstance(resolved, float)
+    assert value == resolved
