@@ -5,6 +5,8 @@
 *.class
 *.pyc
 *.pyd
+.vscode/
+.venv/
 build/
 doc/_build/
 dist/
