@@ -10,6 +10,7 @@ class Object(Field):
     """Represents an object field (sub-document) in the mongo database.
     """
 
+    # TODO until V0.3.0: support ordering fields.
     strict = False
 
     def __init__(self, fields=None, strict=None, name=None, nullable=None,

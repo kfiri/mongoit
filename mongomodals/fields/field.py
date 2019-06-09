@@ -4,7 +4,7 @@ http://api.mongodb.com/python/current/api/bson/index.html
 """
 
 import re
-from bson.py3compat import text_type
+from bson.py3compat import text_type, iteritems
 
 SNAKE_INITIAL_RE = re.compile('_(.)')
 
@@ -19,6 +19,8 @@ class Field(object):
     """A generic class that represents any field from the Mongo database.
     """
 
+    # TODO until V0.1.0: should 'required' and 'name' be a part of the object field, like
+    # the order of the fields
     name = None
     nullable = True
     required = True
@@ -75,13 +77,58 @@ class Field(object):
     def __repr__(self):
         return type(self).__name__
 
+    def __pos__(self):
+        """Get the object that represent an existing field in a Mongo query.
+        """
+        return self.operation(exists=True)
+
+    def __neg__(self):
+        """Get the object that represent a non-existing field in a Mongo query.
+        """
+        return self.operation(exists=False)
+    
+    def __eq__(self, value):
+        """Get the object that represent the == operation in a Mongo query.
+        """
+        return value
+
+    def __ne__(self, value):
+        """Get the object that represent the != operation in a Mongo query.
+        """
+        return self.operation(ne=value)
+
+    def __gt__(self, value):
+        """Get the object that represent the > operation in a Mongo query.
+        """
+        return self.operation(gt=value)
+
+    def __ge__(self, value):
+        """Get the object that represent the >= operation in a Mongo query.
+        """
+        return self.operation(gte=value)
+
+    def __lt__(self, value):
+        """Get the object that represent the < operation in a Mongo query.
+        """
+        return self.operation(lt=value)
+
+    def __le__(self, value):
+        """Get the object that represent the <= operation in a Mongo query.
+        """
+        return self.operation(lte=value)
+
+    def operation(self, **operations):
+        """Get the object that represent the `operations` in a Mongo query.
+        """
+        return {('$' + operation): value for operation, value in iteritems(operations)}
+
     def to_bson(self, value):
-        """Conferts `value` to a BSON type value.
+        """Converts `value` to a BSON type value.
         """
         return value
 
     def from_bson(self, value):
-        """Conferts a BSON type `value` to a python object.
+        """Converts a BSON type `value` to a python object.
         """
         return value
 
