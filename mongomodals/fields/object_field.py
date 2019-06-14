@@ -46,7 +46,7 @@ class Object(Field):
     def get_field(self, key):
         """Get the field in the `key` position of this field.
         """
-        return self.fields.get(key, Field.anonymous)
+        return self.fields.get(key, Field.ANONYMOUS)
 
     def resolve(self, value):
         """Resolve the BSON `value` by setting the default BSON value and

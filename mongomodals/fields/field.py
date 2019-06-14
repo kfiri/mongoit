@@ -158,7 +158,7 @@ class Field(object):
     def get_field(self, key):
         """Get the field in the `key` position of this field.
         """
-        return self.anonymous
+        return self.ANONYMOUS
 
     def get_field_name(self, key):
         """Get the name of the field in the `key` position of this field as it
@@ -173,8 +173,8 @@ class Field(object):
 
 class AnonymousField(Field):
     def __new__(self):
-        return Field.anonymous
+        return Field.ANONYMOUS
 
 
-Field.anonymous = Field.__new__(AnonymousField)
-Field.anonymous.__init__(nullable=True, required=False)
+Field.ANONYMOUS = Field.__new__(AnonymousField)
+Field.ANONYMOUS.__init__(nullable=True, required=False)
