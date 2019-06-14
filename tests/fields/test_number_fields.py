@@ -54,7 +54,7 @@ def test_resolve_number_string(string, value):
                                             ('1.0', 1)])
 def test_resolve_int(raw, value):
     resolved = IntegerField().resolve(raw)
-    assert isinstance(resolved, int)
+    assert isinstance(resolved, Int64)
     assert value == resolved
 
 
