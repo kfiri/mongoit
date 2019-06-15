@@ -1,7 +1,7 @@
 import pytest
 
-from mongomodals.document.field_access import FieldAccess
-from mongomodals.fields import Field, Array, Object
+from mongomodels.document.field_access import FieldAccess
+from mongomodels.fields import Field, Array, Object
 
 FIRST_FIELD = 'a'
 SECOND_FIELD = 'b'

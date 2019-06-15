@@ -1,6 +1,6 @@
 import pytest
 
-from mongomodals.fields import Field
+from mongomodels.fields import Field
 
 
 def test_resolve_none_without_default():

@@ -2,7 +2,7 @@ import pytest
 
 from bson import Int64
 
-from mongomodals.fields import NumberField, IntegerField, RealNumberField
+from mongomodels.fields import NumberField, IntegerField, RealNumberField
 
 
 @pytest.mark.parametrize('value', [1, 0, -1, 1.1, Int64(1)])

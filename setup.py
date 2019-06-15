@@ -8,7 +8,7 @@ setup(name='mongomedels',
       author='Kfir Nissim',
       author_email='kfirr99@gmail.com',
       license='MIT',
-      description='A pythonic package to work with the interface of pymongo',
+      description='A pythonic package to work with the interface of pymongo for the Mongo DB',
       install_requires=['pymongo>=3.5', 'pytz'],  # TODO until V0.1.0: Validate pymongo version.
       packages=find_packages()
 )
