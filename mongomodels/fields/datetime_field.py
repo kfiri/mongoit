@@ -43,6 +43,8 @@ class DatetimeField(Field):
     def to_bson(self, value):
         """Convert a timezone aware datetime to a naive datetime object in UTC.
         """
+        # TODO until V0.5.0: pymongo implements a handler for tz aware
+        # datetimes. Should we still implement this?
         return pytz.utc.normalize(value).replace(tzinfo=None)
 
     def from_bson(self, value):
@@ -74,5 +76,6 @@ class DatetimeField(Field):
             return True
         if not isinstance(value, datetime):
             raise TypeError("value %s must be an instance of datetime" % value)
+        # TODO: we should not check this for data from the database.
         elif not value.tzinfo:
             raise TypeError("value %s is naive" % value)
