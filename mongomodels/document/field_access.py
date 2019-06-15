@@ -25,6 +25,54 @@ class FieldAccess(object):
         name = self.__field.get_field_name(key)
         return FieldAccess(key, name, sub_field, self.__path)
 
+    def __pos__(self):
+        """Get the object that represent an existing field in a Mongo query.
+        """
+        return self.get_operation_for(+self.__field)
+
+    def __neg__(self):
+        """Get the object that represent a non-existing field in a Mongo query.
+        """
+        return self.get_operation_for(-self.__field)
+
+    def __eq__(self, value):
+        """Get the object that represent the == operation in a Mongo query.
+        """
+        return self.get_operation_for(self.__field == value)
+
+    def __ne__(self, value):
+        """Get the object that represent the != operation in a Mongo query.
+        """
+        return self.get_operation_for(self.__field != value)
+
+    def __gt__(self, value):
+        """Get the object that represent the > operation in a Mongo query.
+        """
+        return self.get_operation_for(self.__field > value)
+
+    def __ge__(self, value):
+        """Get the object that represent the >= operation in a Mongo query.
+        """
+        return self.get_operation_for(self.__field >= value)
+
+    def __lt__(self, value):
+        """Get the object that represent the < operation in a Mongo query.
+        """
+        return self.get_operation_for(self.__field < value)
+
+    def __le__(self, value):
+        """Get the object that represent the <= operation in a Mongo query.
+        """
+        return self.get_operation_for(self.__field <= value)
+
+    def get_operation_for(self, operation):
+        """Get the object that represent the `operation` for the field in the
+        field-access in a Mongo query.
+        """
+        for access in reversed(self.__path):
+            operation = {access.__name: operation}
+        return operation
+
     def get_field(self):
         return self.__field
 

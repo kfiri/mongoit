@@ -32,25 +32,25 @@ def test_not_exists():
     assert -Field() == {'$exists': False}
 
 
-def test_eq():
+def test_field_eq():
     assert (Field() == 1) == 1
 
 
-def test_ne():
+def test_field_ne():
     assert (Field() != 1) == {'$ne': 1}
 
 
-def test_gt():
+def test_field_gt():
     assert (Field() > 1) == {'$gt': 1}
 
 
-def test_gte():
+def test_field_gte():
     assert (Field() >= 1) == {'$gte': 1}
 
 
-def test_lt():
+def test_field_lt():
     assert (Field() < 1) == {'$lt': 1}
 
 
-def test_lte():
+def test_field_lte():
     assert (Field() <= 1) == {'$lte': 1}
