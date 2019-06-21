@@ -19,8 +19,10 @@ class Field(object):
     """A generic class that represents any field from the Mongo database.
     """
 
-    # TODO until V0.1.0: should 'required' and 'name' be a part of the object field, like
-    # the order of the fields
+    ANONYMOUS = None  # The anonymous field is set by the class AnonymousField.
+
+    # TODO until V0.1.0: should 'required' and 'name' be a part of the object
+    #  field, like the order of the fields?
     name = None
     nullable = True
     required = True
@@ -86,7 +88,7 @@ class Field(object):
         """Get the object that represent a non-existing field in a Mongo query.
         """
         return self.operation(exists=False)
-    
+
     def __eq__(self, value):
         """Get the object that represent the == operation in a Mongo query.
         """
