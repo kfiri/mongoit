@@ -172,7 +172,7 @@ class Field(object):
 
 
 class AnonymousField(Field):
-    def __new__(self):
+    def __new__(cls):
         return Field.ANONYMOUS
 
 
