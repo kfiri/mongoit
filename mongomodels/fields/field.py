@@ -22,7 +22,7 @@ class Field(object):
     ANONYMOUS = None  # The anonymous field is set by the class AnonymousField.
 
     # TODO until V0.1.0: should 'required' and 'name' be a part of the object
-    #  field, like the order of the fields?
+    #  field, like the order of the properties?
     name = None
     nullable = True
     required = True
