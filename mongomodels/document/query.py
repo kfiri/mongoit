@@ -55,26 +55,27 @@ class QueryRaw(Query):
         return self.raw_query
 
 
-class QueryLogicalOperatorsBase(Query):
+class LogicalOperator(Query):
     """
 
     """
 
 
-class QueryNot(QueryLogicalOperatorsBase):
+class QueryNot(LogicalOperator):
     def __init__(self, query):
         super(QueryNot, self).__init__()
         self.query = query
 
     def as_query(self):
+        # TODO until v0.0.5: validate query type.
         if isinstance(self.query, QueryNot):
             return self.query.query.as_query()
-        if isinstance(self.query, QueryAnyOfBase):
+        if isinstance(self.query, QueriesLogicalOperator):
             return (-self.query).as_query()
-        return
+        return {'$not': self.query.as_query()}
 
 
-class QueryAnyOfBase(QueryLogicalOperatorsBase):
+class QueriesLogicalOperator(LogicalOperator):
     """
 
     """
@@ -85,15 +86,17 @@ class QueryAnyOfBase(QueryLogicalOperatorsBase):
 
         :param queries:
         """
-        # TODO until v0.0.5: validate arguments types.
+        super(QueriesLogicalOperator, self).__init__()
         self.queries = list(queries)
 
     def as_query(self):
-        # TODO until v0.1.0: resolve sub-QueryAnyOf.
+        # TODO until v0.0.5: validate queries types.
+        # TODO until v0.4.0: resolve sub-QueryAnyOf/QueryAllOf.
+        # TODO until v0.4.0: convert a query with only 'not' sub-queries (and(not a, not b) -> nor(a, b)).
         return {self.OPERATOR: [query.as_query() for query in self.queries]}
 
 
-class QueryAnyOf(QueryAnyOfBase):
+class QueryAnyOf(QueriesLogicalOperator):
     """
 
     """
@@ -103,7 +106,7 @@ class QueryAnyOf(QueryAnyOfBase):
         return QueryNotAnyOf(self.queries)
 
 
-class QueryNotAnyOf(QueryAnyOfBase):
+class QueryNotAnyOf(QueriesLogicalOperator):
     """
 
     """
@@ -113,44 +116,23 @@ class QueryNotAnyOf(QueryAnyOfBase):
         return QueryAnyOf(self.queries)
 
 
-class QueryAllOf(QueryLogicalOperatorsBase):
+class QueryAllOf(QueriesLogicalOperator):
     """
 
     """
     OPERATOR = '$and'
 
-    def __init__(self, queries):
-        """
-
-        :param queries:
-        """
-        # TODO until v0.0.5: validate arguments types.
-        self.queries = list(queries)
-
-    def as_query(self):
-        # TODO until v0.1.0: resolve sub-QueryAnyOf.
-        return {self.OPERATOR: [query.as_query() for query in self.queries]}
-
     def __neg__(self):
-        return QueryNotAnyOf(self.queries)
+        return QueryNotAllOf(self.queries)
 
 
-class QueryNotAllOf(QueryLogicalOperatorsBase):
+class QueryNotAllOf(QueriesLogicalOperator):
     """
 
     """
-
-    def __init__(self, queries):
-        """
-
-        :param queries:
-        """
-        # TODO until v0.0.5: validate arguments types.
-        self.queries = list(queries)
 
     def as_query(self):
-        # TODO until v0.1.0: resolve sub-QueryAnyOf.
-        return {'$not': {QueryAllOf.OPERATOR: [query.as_query() for query in self.queries]}}
+        return {'$not': QueryAllOf(self.queries).as_query()}
 
     def __neg__(self):
         return QueryAllOf(self.queries)
