@@ -6,6 +6,12 @@ class Query(object):
     """
     """
 
+    def __add__(self, other):
+        return self & other
+
+    def __sub__(self, other):
+        return self & QueryNot(other)
+
     def __or__(self, other):
         if not isinstance(other, Query):
             return NotImplemented
@@ -15,6 +21,11 @@ class Query(object):
         if not isinstance(other, Query):
             return NotImplemented
         return Query.all_of(self, other)
+
+    def __xor__(self, other):
+        if not isinstance(other, Query):
+            return NotImplemented
+        return Query.one_of(self, other)
 
     def __neg__(self):
         return QueryNot(self)
@@ -36,6 +47,12 @@ class Query(object):
         """
         """
         return QueryAllOf(queries)
+
+    @classmethod
+    def one_of(cls, *queries):
+        """
+        """
+        raise TypeError('one-of queries are not supported')
 
 
 class QueryRaw(Query):
@@ -66,6 +83,9 @@ class QueryNot(LogicalOperator):
         super(QueryNot, self).__init__()
         self.query = query
 
+    def __neg__(self):
+        return self.query
+
     def as_query(self):
         # TODO until v0.0.5: validate query type.
         if isinstance(self.query, QueryNot):
@@ -87,12 +107,13 @@ class QueriesLogicalOperator(LogicalOperator):
         :param queries:
         """
         super(QueriesLogicalOperator, self).__init__()
-        self.queries = list(queries)
+        self.queries = tuple(queries)
 
     def as_query(self):
         # TODO until v0.0.5: validate queries types.
         # TODO until v0.4.0: resolve sub-QueryAnyOf/QueryAllOf.
-        # TODO until v0.4.0: convert a query with only 'not' sub-queries (and(not a, not b) -> nor(a, b)).
+        # TODO until v0.4.0: convert a query with only 'not' sub-queries
+        # (and(not a, not b) -> nor(a, b)).
         return {self.OPERATOR: [query.as_query() for query in self.queries]}
 
 
@@ -131,8 +152,9 @@ class QueryNotAllOf(QueriesLogicalOperator):
 
     """
 
+    def __neg__(self):
+        return QueryAllOf(self.queries)
+
     def as_query(self):
         return {'$not': QueryAllOf(self.queries).as_query()}
 
-    def __neg__(self):
-        return QueryAllOf(self.queries)

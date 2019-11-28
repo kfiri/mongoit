@@ -122,7 +122,8 @@ class Field(object):
     def operation(self, **operations):
         """Get the object that represent the `operations` in a Mongo query.
         """
-        return {('$' + operation): value for operation, value in iteritems(operations)}
+        return {('$' + operation): value
+                for operation, value in iteritems(operations)}
 
     def to_bson(self, value):
         """Converts `value` to a BSON type value.

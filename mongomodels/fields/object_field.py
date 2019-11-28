@@ -11,27 +11,27 @@ class ObjectField(Field):
     """
 
     # TODO until V0.3.0: support ordering properties.
-    # TODO until V0.4.0: support non boolean additionalProperties.
-    additionalProperties = True
+    # TODO until V0.4.0: support non boolean additional_properties.
+    additional_properties = True
 
-    def __init__(self, properties=None, additionalProperties=None, name=None,
+    def __init__(self, properties=None, additional_properties=None, name=None,
                  nullable=None, required=None, get_default=None, **kwargs):
         """Defines an object of fields in MongoDB.
 
         :Parameters:
           - `properties` (optional): A mapping of a key to a field.
-          - `additionalProperties` (optional): If ``True``, raise
+          - `additional_properties` (optional): If ``True``, raise
             :class:`TypeError` if this field contains any properties that are
             not in the object's `properties`.
           - `**kwargs` (optional): See the documentation about
             :class:`~mongomodals.field.Field` for the full details.
         """
         super(ObjectField, self).__init__(name=name, nullable=nullable,
-                                     required=required,
-                                     get_default=get_default, **kwargs)
+                                          required=required,
+                                          get_default=get_default, **kwargs)
 
-        if additionalProperties is not None:
-            self.additionalProperties = additionalProperties
+        if additional_properties is not None:
+            self.additional_properties = additional_properties
 
         self.properties = SON()
         if properties is not None:
@@ -41,7 +41,7 @@ class ObjectField(Field):
         repr_fields = u', '.join(("%s=%s" if prop.required else "[%s=%s]") %
                                  (key, prop)
                                  for key, prop in iteritems(self.properties))
-        if not self.additionalProperties:
+        if self.additional_properties:
             repr_fields += ', ...' if repr_fields else '...'
         return "%s<%s>" % (super(ObjectField, self).__repr__(), repr_fields)
 
@@ -91,6 +91,6 @@ class ObjectField(Field):
 
         # If self is limiting the fields that it may contain,
         # make sure that object does not contain any unexpected fields.
-        if self.additionalProperties and extra_names:
+        if not self.additional_properties and extra_names:
             raise TypeError("properties %s are not excepted for %r" %
                             (', '.join(repr(n) for n in extra_names), self))

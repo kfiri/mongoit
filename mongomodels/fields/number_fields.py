@@ -11,7 +11,8 @@ class NumberField(Field):
     """
 
     def resolve(self, value):
-        """Resolve the BSON `value` by converting strings and string-like types into numbers.
+        """Resolve the BSON `value` by converting strings and string-like types
+        into numbers.
         """
         value = super(NumberField, self).resolve(value)
         if isinstance(value, (bytearray, bytes, string_type)):
@@ -38,7 +39,8 @@ class IntegerField(NumberField):
     """
 
     def resolve(self, value):
-        """Resolve the BSON `value` by converting integer floats into :class:`bson.Int64`.
+        """Resolve the BSON `value` by converting integer floats into
+        :class:`bson.Int64`.
         """
         value = super(IntegerField, self).resolve(value)
         if isinstance(value, float) and value.is_integer():
