@@ -9,30 +9,30 @@ class ArrayField(Field):
     """Represents an array field in the mongo database.
     """
 
-    def __init__(self, field, name=None, nullable=None, required=None,
+    def __init__(self, items, name=None, nullable=None, required=None,
                  get_default=None, **kwargs):
         """Defines an array of a field in MongoDB.
 
         :Parameters:
-          - `field`: The field of the items in the array. The `name` and
-            the `required` attributes of the `field` are discarded.
+          - `items`: The field of the items in the array. The `name` and
+            the `required` attributes of the `items` are discarded.
           - `**kwargs` (optional): See the documentation about
             :class:`~mongomodals.field.Field` for the full details.
         """
         super(ArrayField, self).__init__(name=name, nullable=nullable,
                                     required=required,
                                     get_default=get_default, **kwargs)
-        self.field = field
+        self.items = items
 
     def __repr__(self):
-        return "%s<%r>" % (super(ArrayField, self).__repr__(), self.field)
+        return "%s<%r>" % (super(ArrayField, self).__repr__(), self.items)
 
     def get_field(self, key):
         """Get the field in the `key` position of this field.
         """
         if isinstance(key, integer_types):
-            return self.field
-        return self.field.get_field(key)
+            return self.items
+        return self.items.get_field(key)
 
     def resolve(self, value):
         """Resolve the BSON `value` by setting the default BSON value and
@@ -44,7 +44,7 @@ class ArrayField(Field):
         value = super(ArrayField, self).resolve(value)
         if value is not None:
             for i, item in enumerate(value):
-                value[i] = self.field.resolve(item)
+                value[i] = self.items.resolve(item)
         return value
 
     def validate(self, value):
@@ -60,4 +60,4 @@ class ArrayField(Field):
         #     raise TypeError("array value must have at least %s item(s)" %
         #                     self.min_length)
         for item in value:
-            self.field.validate(item)
+            self.items.validate(item)

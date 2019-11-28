@@ -23,7 +23,7 @@ def test_access_anonymous_field():
 def test_access_array_field():
     array_field = ArrayField(Field())
     field_access = FieldAccess(FIRST_NAME, FIRST_NAME, array_field)[0]
-    assert field_access.get_field() is array_field.field
+    assert field_access.get_field() is array_field.items
     assert field_access.get_path_as_name() == '.'.join((FIRST_NAME, '0'))
 
 
