@@ -6,7 +6,7 @@ from bson.py3compat import iteritems
 from .field import Field
 
 
-class Object(Field):
+class ObjectField(Field):
     """Represents an object field (sub-document) in the mongo database.
     """
 
@@ -26,7 +26,7 @@ class Object(Field):
           - `**kwargs` (optional): See the documentation about
             :class:`~mongomodals.field.Field` for the full details.
         """
-        super(Object, self).__init__(name=name, nullable=nullable,
+        super(ObjectField, self).__init__(name=name, nullable=nullable,
                                      required=required,
                                      get_default=get_default, **kwargs)
 
@@ -43,7 +43,7 @@ class Object(Field):
                                  for key, prop in iteritems(self.properties))
         if not self.additionalProperties:
             repr_fields += ', ...' if repr_fields else '...'
-        return "%s<%s>" % (super(Object, self).__repr__(), repr_fields)
+        return "%s<%s>" % (super(ObjectField, self).__repr__(), repr_fields)
 
     def get_field(self, key):
         """Get the property in the `key` position of this field.
@@ -57,7 +57,7 @@ class Object(Field):
         :Returns:
           The resolved `value`.
         """
-        value = super(Object, self).resolve(value)
+        value = super(ObjectField, self).resolve(value)
         if value is not None:
             for key, prop in iteritems(self.properties):
                 name = self.get_field_name(key)
@@ -71,7 +71,7 @@ class Object(Field):
         """Raises :class:`TypeError` if `value` is not an instance of
         :class:`dict` or if any validation of its fields fail.
         """
-        if super(Object, self).validate(value):
+        if super(ObjectField, self).validate(value):
             return True
 
         # Check the type of the BSON value.

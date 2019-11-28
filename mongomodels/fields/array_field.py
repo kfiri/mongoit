@@ -5,7 +5,7 @@ from bson.py3compat import integer_types
 from .field import Field
 
 
-class Array(Field):
+class ArrayField(Field):
     """Represents an array field in the mongo database.
     """
 
@@ -19,13 +19,13 @@ class Array(Field):
           - `**kwargs` (optional): See the documentation about
             :class:`~mongomodals.field.Field` for the full details.
         """
-        super(Array, self).__init__(name=name, nullable=nullable,
+        super(ArrayField, self).__init__(name=name, nullable=nullable,
                                     required=required,
                                     get_default=get_default, **kwargs)
         self.field = field
 
     def __repr__(self):
-        return "%s<%r>" % (super(Array, self).__repr__(), self.field)
+        return "%s<%r>" % (super(ArrayField, self).__repr__(), self.field)
 
     def get_field(self, key):
         """Get the field in the `key` position of this field.
@@ -41,7 +41,7 @@ class Array(Field):
         :Returns:
           The resolved `value`.
         """
-        value = super(Array, self).resolve(value)
+        value = super(ArrayField, self).resolve(value)
         if value is not None:
             for i, item in enumerate(value):
                 value[i] = self.field.resolve(item)
@@ -51,7 +51,7 @@ class Array(Field):
         """Raises :class:`TypeError` if `value` is not an instance of
         :class:`list` or if any validation of its items fail.
         """
-        if super(Array, self).validate(value):
+        if super(ArrayField, self).validate(value):
             return True
         if not isinstance(value, list):
             raise TypeError("value %s must be an instance of list" % value)
