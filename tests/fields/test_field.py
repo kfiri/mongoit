@@ -13,6 +13,11 @@ def test_resolve_none_with_default():
     assert field.resolve(None) == 1
 
 
+def test_resolve_none_with_get_default():
+    field = Field(nullable=False, get_default=list)
+    assert field.resolve(None) == []
+
+
 def test_validate_none_nullable():
     field = Field()
     field.validate(None)

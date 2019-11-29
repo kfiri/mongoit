@@ -50,8 +50,7 @@ def test_resolve_number_string(string, value):
 
 @pytest.mark.parametrize(('raw', 'value'), [(1.0, 1),
                                             ('0', 0),
-                                            ('-1.0', -1),
-                                            ('1.0', 1)])
+                                            ('-1.0', -1)])
 def test_resolve_int(raw, value):
     resolved = IntegerField().resolve(raw)
     assert isinstance(resolved, Int64)
@@ -60,8 +59,7 @@ def test_resolve_int(raw, value):
 
 @pytest.mark.parametrize(('raw', 'value'), [(1, 1.0),
                                             ('0', 0.0),
-                                            ('-1', -1.0),
-                                            ('1.0', 1.0)])
+                                            ('-1', -1.0)])
 def test_resolve_real_number(raw, value):
     resolved = RealNumberField().resolve(raw)
     assert isinstance(resolved, float)
