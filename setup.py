@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 
 setup(name='mongomedels',
-      version='0.0.1',
+      version='0.0.2',
       author='Kfir Nissim',
       author_email='kfirr99@gmail.com',
       license='MIT',

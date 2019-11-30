@@ -119,6 +119,21 @@ class Field(object):
         """
         return self.operation(lte=value)
 
+    def __rshift__(self, value):
+        """Get the object that represent the $in operation in a Mongo query.
+        (is the field is $in the value?)
+        """
+        return self.operation(**{'in': value})
+
+    def __rrshift__(self, value):
+        """(if the value is in the field)
+        https://docs.mongodb.com/manual/tutorial/query-arrays/#query-an-array-for-an-element
+        https://docs.mongodb.com/manual/reference/operator/query/all/#all
+        https://docs.mongodb.com/manual/reference/operator/query/elemMatch/#elemmatch-query
+        """
+        # TODO until v0.1.0: array operatores.
+        raise NotImplementedError("TODO")
+
     def operation(self, **operations):
         """Get the object that represent the `operations` in a Mongo query.
         """
