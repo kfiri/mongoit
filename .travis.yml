@@ -7,14 +7,18 @@ python:
   - 3.6
   - 3.7
   - 3.8
-  - pypy
-  - pypy3.5
+  - pypy2
+  - pypy3
 
 install:
   - pip install pymongo
   - pip install pytz
 
   - pip install pytest
+  - pip install codecov
+  - pip install pytest-cov
 
 script:
-  - python -m pytest
+  - python -m pytest --cov=codecov
+after_success:
+  - codecov

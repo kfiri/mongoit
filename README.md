@@ -1,1 +1,2 @@
+[![coverage](https://codecov.io/gh/kfiri/mongoit/branch/master/graph/badge.svg)](https://codecov.io/gh/kfiri/mongoit)
 [![tests](https://github.com/kfiri/mongoit/workflows/Python%20package/badge.svg)](https://github.com/kfiri/mongoit/actions?query=workflow%3A%22Python+package%22)
