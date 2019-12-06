@@ -65,9 +65,9 @@ def test_field_in():
     assert (Field() >> [1, 2, 3]) == {'$in': [1, 2, 3]}
 
 
-def test_value_in_field():
-    assert (1 >> Field()) == 1
+# def test_value_in_field():
+#     assert (1 >> Field()) == 1
 
 
-def test_query_in_field():
-    assert ((Field() != 1) >> Field()) == {'$elemMatch': {'$ne': 1}}
+# def test_query_in_field():
+#     assert ((Field() != 1) >> Field()) == {'$elemMatch': {'$ne': 1}}

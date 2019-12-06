@@ -63,8 +63,8 @@ class ObjectField(Field):
                 name = self.get_field_name(key)
                 if name in value:
                     value[name] = prop.resolve(value[name])
-                elif prop.required and prop.get_default_bson:
-                    value[name] = prop.resolve(prop.get_default_bson())
+                elif prop.required and prop.get_default:
+                    value[name] = prop.resolve(prop.get_default())
         return value
 
     def validate(self, value):
